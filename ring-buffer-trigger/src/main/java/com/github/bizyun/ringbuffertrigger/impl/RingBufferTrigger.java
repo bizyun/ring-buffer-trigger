@@ -161,8 +161,10 @@ class RingBufferTrigger<E, C> implements BufferTrigger<E> {
             return;
         }
         try {
-            MoreExecutors.shutdownAndAwaitTermination(scheduledExecutorService, timeout,
-                    timeUnit);
+            if (scheduledExecutorService != null) {
+                MoreExecutors.shutdownAndAwaitTermination(scheduledExecutorService, timeout,
+                        timeUnit);
+            }
             lock.writeLock().lock();
             try {
                 disruptor.shutdown(timeout, timeUnit);
