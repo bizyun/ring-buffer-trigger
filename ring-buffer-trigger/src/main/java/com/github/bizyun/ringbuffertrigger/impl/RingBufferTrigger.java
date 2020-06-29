@@ -1,5 +1,6 @@
 package com.github.bizyun.ringbuffertrigger.impl;
 
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -12,6 +13,7 @@ import com.github.bizyun.ringbuffertrigger.BufferTrigger;
 import com.github.bizyun.ringbuffertrigger.RejectedEnqueueHandler;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import com.google.common.util.concurrent.Uninterruptibles;
 import com.lmax.disruptor.BlockingWaitStrategy;
 import com.lmax.disruptor.EventTranslator;
 import com.lmax.disruptor.RingBuffer;
@@ -36,6 +38,7 @@ class RingBufferTrigger<E, C> implements BufferTrigger<E> {
 
     private final AtomicInteger status = new AtomicInteger(INIT);
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
+    private final CountDownLatch shutdownWaiter = new CountDownLatch(1);
 
     private final Disruptor<Event<E>> disruptor;
     private final RejectedEnqueueHandler<E> rejectHandler;
@@ -58,7 +61,8 @@ class RingBufferTrigger<E, C> implements BufferTrigger<E> {
                 new ThreadFactoryBuilder().setNameFormat(nameFormat).setDaemon(false).build(),
                 ProducerType.MULTI,
                 new BlockingWaitStrategy());
-        this.disruptor.handleEventsWith(new BatchEventHandler<>(builder));
+        this.disruptor.handleEventsWith(new BatchEventHandler<>(builder,
+                shutdownWaiter));
         this.rejectHandler = builder.getRejectedEnqueueHandler();
     }
 
@@ -150,6 +154,7 @@ class RingBufferTrigger<E, C> implements BufferTrigger<E> {
             } finally {
                 lock.writeLock().unlock();
             }
+            Uninterruptibles.awaitUninterruptibly(shutdownWaiter);
         } finally {
             status.set(CLOSED);
         }
@@ -173,6 +178,7 @@ class RingBufferTrigger<E, C> implements BufferTrigger<E> {
             } finally {
                 lock.writeLock().unlock();
             }
+            Uninterruptibles.awaitUninterruptibly(shutdownWaiter, timeout, timeUnit);
         } finally {
             status.set(CLOSED);
         }

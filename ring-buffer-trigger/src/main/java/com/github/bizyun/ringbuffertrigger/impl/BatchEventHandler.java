@@ -1,5 +1,6 @@
 package com.github.bizyun.ringbuffertrigger.impl;
 
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executor;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -25,17 +26,19 @@ class BatchEventHandler<E, C> implements EventHandler<Event<E>>, LifecycleAware 
     private final Executor executor;
     private final Supplier<Integer> batchConsumeSize;
     private final BiConsumer<Throwable, ? super C> exceptionHandler;
+    private final CountDownLatch shutdownLatch;
 
     private C container;
     private int currentSize = 0;
 
-    public BatchEventHandler(RingBufferTriggerBuilder<E, C> builder) {
+    public BatchEventHandler(RingBufferTriggerBuilder<E, C> builder, CountDownLatch shutdownWaiter) {
         this.containerFactory = builder.getContainerFactory();
         this.containerAdder = builder.getContainerAdder();
         this.bufferConsumer = builder.getConsumer();
         this.executor = builder.getConsumerExecutor();
         this.batchConsumeSize = builder.getBatchConsumeSize();
         this.exceptionHandler = builder.getExceptionHandler();
+        this.shutdownLatch = shutdownWaiter;
     }
 
     @Override
@@ -93,5 +96,6 @@ class BatchEventHandler<E, C> implements EventHandler<Event<E>>, LifecycleAware 
         if (this.currentSize > 0) {
             doBatchConsume();
         }
+        shutdownLatch.countDown();
     }
 }

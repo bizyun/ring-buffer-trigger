@@ -46,14 +46,14 @@ class BufferTriggerTest {
             final long k = i;
             executorService.execute(() -> ringBufferTrigger.enqueue(k));
         }
-        MoreExecutors.shutdownAndAwaitTermination( executorService, 1, TimeUnit.MILLISECONDS);
+        MoreExecutors.shutdownAndAwaitTermination( executorService, 1, TimeUnit.MINUTES);
         ringBufferTrigger.close();
 
         assertEquals(4, resultMap.size());
-        assertEquals(30, resultMap.get(0));
-        assertEquals(30, resultMap.get(1));
-        assertEquals(30, resultMap.get(2));
-        assertEquals(10, resultMap.get(3));
+        assertEquals(30, resultMap.get(0).size());
+        assertEquals(30, resultMap.get(1).size());
+        assertEquals(30, resultMap.get(2).size());
+        assertEquals(10, resultMap.get(3).size());
 
     }
 }
