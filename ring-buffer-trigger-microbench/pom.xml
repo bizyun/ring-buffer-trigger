@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.github.bizyun</groupId>
         <artifactId>ring-buffer-trigger-parent</artifactId>
-        <version>0.1.2-SNAPSHOT</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>ring-buffer-trigger-microbench</artifactId>
