@@ -13,7 +13,7 @@
     <properties>
         <revision>0.1.3-SNAPSHOT</revision>
         <slf4j-api.version>1.7.21</slf4j-api.version>
-        <guava.version>28.1-jre</guava.version>
+        <guava.version>29.0-jre</guava.version>
         <commons-lang3.version>3.8.1</commons-lang3.version>
         <disruptor.version>3.4.2</disruptor.version>
 
