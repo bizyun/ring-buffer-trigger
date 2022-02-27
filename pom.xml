@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.github.bizyun</groupId>
+    <groupId>io.github.bizyun</groupId>
     <artifactId>ring-buffer-trigger-parent</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
@@ -23,7 +23,7 @@
         <jsr305.version>3.0.2</jsr305.version>
 
         <coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
-        <jacoco-maven-plugin.version>0.8.5</jacoco-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
         <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
@@ -72,7 +72,7 @@
             </dependency>
 
             <dependency>
-                <groupId>com.github.bizyun</groupId>
+                <groupId>io.github.bizyun</groupId>
                 <artifactId>ring-buffer-trigger</artifactId>
                 <version>${revision}</version>
             </dependency>
