@@ -11,7 +11,7 @@
     </prerequisites>
 
     <properties>
-        <revision>0.1.7</revision>
+        <revision>0.1.11-SNAPSHOT</revision>
         <slf4j-api.version>1.7.21</slf4j-api.version>
         <guava.version>28.1-jre</guava.version>
         <commons-lang3.version>3.8.1</commons-lang3.version>
